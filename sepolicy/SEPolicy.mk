@@ -8,7 +8,8 @@ BOARD_VENDOR_SEPOLICY_DIRS += \
     $(COMMON_SEPOLICY_PATH)/generic/vendor/common \
     $(COMMON_SEPOLICY_PATH)/qva/vendor/common \
     $(COMMON_SEPOLICY_PATH)/generic/vendor/$(TARGET_SEPOLICY_DIR) \
-    $(COMMON_SEPOLICY_PATH)/qva/vendor/$(TARGET_SEPOLICY_DIR)
+    $(COMMON_SEPOLICY_PATH)/qva/vendor/$(TARGET_SEPOLICY_DIR) \
+    $(COMMON_SEPOLICY_PATH)/common/vendor
 
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
