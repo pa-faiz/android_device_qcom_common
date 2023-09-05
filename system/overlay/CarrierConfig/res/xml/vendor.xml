@@ -2578,6 +2578,44 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
         <boolean name="force_home_network_bool" value="true" />
     </carrier_config>
 
+   <carrier_config cid="1961" name="Airtel">
+        <boolean name="carrier_allow_transfer_ims_call_bool" value="false" />
+        <boolean name="support_video_conference_call_bool" value="true" />
+        <boolean name="editable_wfc_mode_bool" value="true" />
+        <boolean name="editable_wfc_roaming_mode_bool" value="false" />
+        <boolean name="nt_carrier_wait_for_in_service_to_dial_ecc_bool" value="true" />
+        <boolean name="nt_carrier_change_to_auto_mode_bool" value="true" />
+        <long name="nt_carrier_change_to_auto_mode_delay_timer_long" value="30000" />
+        <boolean name="nt_carrier_nsa_cell_cache_bool" value="true" />
+        <boolean name="nt_carrier_enhance_nr_icon_bool" value="true" />
+        <boolean name="allow_hold_call_during_emergency_bool" value="false" />
+    </carrier_config>
+
+    <carrier_config cid="2018" name="Reliance Jio">
+        <boolean name="editable_wfc_mode_bool" value="true" />
+        <boolean name="editable_wfc_roaming_mode_bool" value="false" />
+        <boolean name="config_disable_clir_over_ut" value="true" />
+        <boolean name="config_hide_vt_callforward_option" value="false" />
+        <boolean name="nt_carrier_disable_sa_for_wfc_bool" value="true" />
+        <string name="nt_carrier_spn_by_rat_string">JIO 4G:JIO True5G</string>
+        <boolean name="nt_carrier_change_to_auto_mode_bool" value="true" />
+        <long name="nt_carrier_change_to_auto_mode_delay_timer_long" value="30000" />
+        <boolean name="hide_enhanced_4g_lte_bool" value="true" />
+        <boolean name="nt_hide_5g_standalone_bool" value="true" />
+        <boolean name="nt_carrier_default_sa_enabled_bool" value="true" />
+        <boolean name="carrier_allow_transfer_ims_call_bool" value="false" />
+        <boolean name="nt_hide_3G_mode_bool" value="true" />
+        <boolean name="allow_hold_video_call_bool" value="false" />
+        <boolean name="allow_hold_call_during_emergency_bool" value="false" />
+        <boolean name="vonr_enabled_bool" value="true" />
+        <boolean name="vonr_on_by_default_bool" value="true" />
+        <string-array name="carrier_certificate_string_array" num="1">
+            <item value="FBBD7CC8E99BF58CDC03D6FC006B9DABFB5D2B7AEA00B69DBCBC783A15AA455B" />
+        </string-array>
+        <boolean name="allow_add_call_during_video_call" value="false" />
+        <string name="nt_ims_recovery_settings_string">1:7200000:60000:5000:30000</string>
+    </carrier_config>
+
     <carrier_config mcc="311" mnc="00">
         <boolean name="rtt_supported_bool" value="true" />
         <boolean name="rtt_upgrade_supported_bool" value="true"/>
