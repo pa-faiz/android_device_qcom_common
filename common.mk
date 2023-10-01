@@ -191,6 +191,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     vndservicemanager
 
+# Power whitelist
+PRODUCT_COPY_FILES += \
+    vendor/aospa/target/config/permissions/yaap-power-whitelist.xml:system/etc/sysconfig/yaap-power-whitelist.xml
+
 # SoC
 PRODUCT_VENDOR_PROPERTIES += \
     ro.soc.manufacturer=QTI
