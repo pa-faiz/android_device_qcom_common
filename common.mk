@@ -149,6 +149,10 @@ endif
 PRODUCT_PACKAGES += \
     libcurl
 
+# Linker config
+PRODUCT_VENDOR_LINKER_CONFIG_FRAGMENTS += \
+    $(QCOM_COMMON_PATH)/linker.config.json
+
 # Media
 TARGET_DYNAMIC_64_32_MEDIASERVER := true
 
