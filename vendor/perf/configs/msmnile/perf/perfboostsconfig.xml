@@ -203,5 +203,11 @@
                 Id="0x00001040" Enable="true" Timeout="0" Target="msmnile"
                 Resources="0x40000000, 0x0" />
 
+    <!-- Expensive Rendering -->
+        <!-- GPU MIN_FREQUENCY resource opcode,value -->
+        <Config
+            Id="0x000010A5" Enable="true" Timeout="0" Target="msmnile"
+            Resources="0x42804000, 3"/>
+
     </PerfBoost>
 </BoostConfigs>
