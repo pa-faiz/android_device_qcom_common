@@ -23,8 +23,8 @@ fi
 
 set -e
 
-# Required!
 export COMPONENT=adreno-msmnile
 export VENDOR=qcom/common/vendor
+export VENDOR_COMMON=${VENDOR}
 
 "../extract-files.sh" "$@"
