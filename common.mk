@@ -210,6 +210,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vndservicemanager
 
+# VNDK
+PRODUCT_PACKAGES += \
+    libjsoncpp.vendor
+
 # SoC
 PRODUCT_VENDOR_PROPERTIES += \
     ro.soc.manufacturer=QTI
