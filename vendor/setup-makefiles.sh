@@ -95,6 +95,7 @@ function lib_to_package_fixup_vendor_variants() {
             libmdmdetect | \
             libmmosal | \
             libOmxCore | \
+            libgps.utils | \
             libpalclient | \
             libpdmapper | \
             libperipheral_client | \
