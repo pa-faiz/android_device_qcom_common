@@ -110,6 +110,7 @@ function lib_to_package_fixup_vendor_variants() {
             libqrtr | \
             libQSEEComAPI | \
             libril-qc-logger | \
+            libsdedrm | \
             libsdmdal | \
             libsnsapi | \
             libthermalclient | \
