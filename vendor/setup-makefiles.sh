@@ -118,6 +118,7 @@ function lib_to_package_fixup_vendor_variants() {
             libwfdcommonutils_proprietary | \
             libwfdmmservice_proprietary | \
             libwfdutils_proprietary | \
+            libwifi-hal-qcom | \
             libwpa_client | \
             qcril_hal_client)
             # Unreachable soong namespace
