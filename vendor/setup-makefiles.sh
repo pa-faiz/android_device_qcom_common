@@ -28,6 +28,7 @@ function vendor_imports() {
         "hardware/qcom/display/gralloc",
         "hardware/qcom/display/libdebug",
         "hardware/qcom/wlan/qcwcn",
+        "vendor/qcom/common/vendor/adreno-msmnile",
         "vendor/qcom/common/vendor/adreno-5xx",
         "vendor/qcom/common/vendor/adreno-r",
         "vendor/qcom/common/vendor/adreno-s",
