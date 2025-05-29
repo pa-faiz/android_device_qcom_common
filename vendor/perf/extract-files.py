@@ -12,6 +12,7 @@ from extract_utils.fixups_lib import (
 )
 from extract_utils.main import ExtractUtils
 
+from extract_utils.fixups_blob import blob_fixup, blob_fixups_user_type
 from extract_utils_qti.fixups_lib import lib_fixup_vendor_suffix
 from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
@@ -23,6 +24,23 @@ namespace_imports = [
     'vendor/qcom/common/vendor/display/5.4',
     'vendor/qcom/common/vendor/display/6.6',
 ]
+
+blob_fixups: blob_fixups_user_type = {
+    'vendor/lib64/libaodoptfeature.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/libapengine.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/libgamepoweroptfeature.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/liboffscreenpoweroptfeature.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/libpsmoptfeature.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/libqti-perfd.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+    'vendor/lib64/libvideooptfeature.so': blob_fixup()
+        .replace_needed('vendor.qti.hardware.display.config-V5-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
+}  # fmt: skip
 
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
@@ -41,6 +59,7 @@ module = ExtractUtilsQTIModule(
     'perf',
     QTIComponentType.VENDOR,
     namespace_imports=namespace_imports,
+    blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
 )
 
