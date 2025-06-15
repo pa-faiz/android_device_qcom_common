@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-ifeq ($(call is-board-platform-in-list,$(6_1_FAMILY)),true)
+ifeq ($(call is-board-platform-in-list,$(6_6_FAMILY)),true)
+  TARGET_ADRENO_DIR ?= v
+else ifeq ($(call is-board-platform-in-list,$(6_1_FAMILY)),true)
   TARGET_ADRENO_DIR ?= u
 else ifeq ($(call is-board-platform-in-list,$(5_15_FAMILY)),true)
   TARGET_ADRENO_DIR ?= t
