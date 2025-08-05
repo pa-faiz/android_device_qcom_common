@@ -20,6 +20,7 @@ namespace_imports = [
     'vendor/qcom/common/vendor/display/5.10',
     'vendor/qcom/common/vendor/display/5.15',
     'vendor/qcom/common/vendor/display/5.4',
+    'vendor/qcom/common/vendor/display/6.6',
 ]
 
 lib_fixups: lib_fixups_user_type = {
