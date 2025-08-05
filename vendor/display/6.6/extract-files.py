@@ -1,4 +1,4 @@
-#!/usr/bin/env -S PYTHONPATH=../../:../../../../../tools/extract-utils python3
+#!/usr/bin/env -S PYTHONPATH=../../../:../../../../../../tools/extract-utils python3
 #
 # SPDX-FileCopyrightText: The LineageOS Project
 # SPDX-FileCopyrightText: Paranoid Android
@@ -16,25 +16,33 @@ from extract_utils_qti.fixups_lib import lib_fixup_vendor_suffix
 from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
 namespace_imports = [
-    'vendor/qcom/common/vendor/display/4.19',
-    'vendor/qcom/common/vendor/display/5.10',
-    'vendor/qcom/common/vendor/display/5.15',
-    'vendor/qcom/common/vendor/display/5.4',
-    'vendor/qcom/common/vendor/display/6.6',
+    'vendor/qcom/common/vendor/display',
+    'vendor/qcom/common/vendor/qseecomd',
 ]
 
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
-        'vendor.qti.hardware.iop@2.0',
-        'vendor.qti.hardware.perf2-V1-ndk',
-        'vendor.qti.qspmhal-V1-ndk',
+        'vendor.display.color@1.0',
+        'vendor.display.color@1.1',
+        'vendor.display.color@1.2',
+        'vendor.display.color@1.3',
+        'vendor.display.color@1.4',
+        'vendor.display.color@1.5',
+        'vendor.display.color@1.6',
+        'vendor.display.color@1.7',
+        'vendor.display.postproc@1.0',
     ): lib_fixup_vendor_suffix,
-    'libthermalclient': lib_fixup_remove,
+    (
+        'libminksocket_vendor',
+        'libqcbor',
+        'libqrtr',
+        'libvmmem',
+    ): lib_fixup_remove,
 }
 
 module = ExtractUtilsQTIModule(
-    'perf',
+    'display/6.6',
     QTIComponentType.VENDOR,
     namespace_imports=namespace_imports,
     lib_fixups=lib_fixups,
