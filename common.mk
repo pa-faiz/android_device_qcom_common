@@ -116,6 +116,10 @@ ifneq (,$(filter 4.14 4.19 5.4, $(TARGET_KERNEL_VERSION)))
 $(call soong_config_set,qti_thermal,netlink,false)
 endif
 
+ifneq (,$(filter 6.1 6.6, $(TARGET_KERNEL_VERSION)))
+$(call soong_config_set,qtiaudio,feature_ar_memlogger,false)
+endif
+
 ifeq ($(call is-board-platform-in-list,$(QCOM_BOARD_PLATFORMS)),true)
 ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),true)
 # Compatibility matrix
