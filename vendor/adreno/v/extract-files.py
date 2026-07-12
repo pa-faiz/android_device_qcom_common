@@ -9,6 +9,7 @@ from extract_utils.main import ExtractUtils
 from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
 namespace_imports = [
+    'vendor/qcom/common/system/perf',
     'vendor/qcom/common/vendor/perf',
 ]
 
