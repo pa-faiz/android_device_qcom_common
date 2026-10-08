@@ -143,6 +143,10 @@ if [ -d /proc/sys/walt ]; then
 	echo 1 > /sys/devices/system/cpu/cpufreq/policy0/walt/pl
 	echo 1 > /sys/devices/system/cpu/cpufreq/policy6/walt/pl
 
+	#zone base target load
+	echo 1324800 80 1747200 80 2112000 80 2438400 80 > /sys/devices/system/cpu/cpufreq/policy0/walt/zone_max_util_pct
+	echo 1900800 80 2380800 80 2784000 80 3264000 80 3628800 80 > /sys/devices/system/cpu/cpufreq/policy6/walt/zone_max_util_pct
+
 	if [ $rev == "1.0" ] || [ $rev == "1.1" ]; then
 		echo 787200 > /sys/devices/system/cpu/cpufreq/policy0/walt/rtg_boost_freq
 		echo 902400 > /sys/devices/system/cpu/cpufreq/policy6/walt/rtg_boost_freq
@@ -154,6 +158,8 @@ if [ -d /proc/sys/walt ]; then
 		echo 1344000 > /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
 		echo 2380800 > /sys/devices/system/cpu/cpufreq/policy6/walt/hispeed_freq
 	fi
+        # Disable hispeed_freq while cur_freq < 748800 (fangqiurong@BSP.CPU, 2024/8/2)
+        echo 748800 > /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_cond_freq
 else
 	echo "schedutil" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
 	echo "schedutil" > /sys/devices/system/cpu/cpufreq/policy6/scaling_governor
@@ -250,5 +256,9 @@ case "$console_config" in
 		echo "Enable console config to $console_config"
 	;;
 esac
+
+echo 1 > /proc/oplus_scheduler/sched_assist/silver_perf_core
+
+chown system system /proc/oplus_cl/cl_glthread
 
 setprop vendor.post_boot.parsed 1

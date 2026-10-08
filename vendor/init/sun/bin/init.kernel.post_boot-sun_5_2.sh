@@ -49,11 +49,32 @@ if [ -d /proc/sys/walt ]; then
 	# configure maximum frequency when CPUs are partially halted
 	echo 2147483647 > /proc/sys/walt/sched_max_freq_partial_halt
 
-	# Disable Core control parameters for gold
-	echo 0 > /sys/devices/system/cpu/cpu0/core_ctl/enable
+	# Core control parameters for gold
+	echo 4 > /sys/devices/system/cpu/cpu0/core_ctl/min_cpus
+	echo 60 > /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres
+	echo 30 > /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres
+	echo 100 > /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms
+	echo 5 > /sys/devices/system/cpu/cpu0/core_ctl/task_thres
+	echo 0 1 1 0 0 > /sys/devices/system/cpu/cpu0/core_ctl/not_preferred
+	echo 0x7F > /sys/devices/system/cpu/cpu0/core_ctl/nrrun_cpu_mask
+	echo 0x00 > /sys/devices/system/cpu/cpu0/core_ctl/nrrun_cpu_misfit_mask
+	echo 0x00 > /sys/devices/system/cpu/cpu0/core_ctl/assist_cpu_mask
+	echo 0x00 > /sys/devices/system/cpu/cpu0/core_ctl/assist_cpu_misfit_mask
 
-	# Disable Core control parameters for gold+
-	echo 0 > /sys/devices/system/cpu/cpu5/core_ctl/enable
+	# Core control parameters for gold+
+	echo 0 > /sys/devices/system/cpu/cpu5/core_ctl/min_cpus
+	echo 60 > /sys/devices/system/cpu/cpu5/core_ctl/busy_up_thres
+	echo 30 > /sys/devices/system/cpu/cpu5/core_ctl/busy_down_thres
+	echo 100 > /sys/devices/system/cpu/cpu5/core_ctl/offline_delay_ms
+	echo 2 > /sys/devices/system/cpu/cpu5/core_ctl/task_thres
+	echo 0 0 > /sys/devices/system/cpu/cpu5/core_ctl/not_preferred
+	echo 0x60 > /sys/devices/system/cpu/cpu5/core_ctl/nrrun_cpu_mask
+	echo 0x1F > /sys/devices/system/cpu/cpu5/core_ctl/nrrun_cpu_misfit_mask
+	echo 0x00 > /sys/devices/system/cpu/cpu5/core_ctl/assist_cpu_mask
+	echo 0x1F > /sys/devices/system/cpu/cpu5/core_ctl/assist_cpu_misfit_mask
+
+	echo 1 > /sys/devices/system/cpu/cpu0/core_ctl/enable
+	echo 1 > /sys/devices/system/cpu/cpu5/core_ctl/enable
 
 	# Configure Single Boost Thread
 	echo 0 > /proc/sys/walt/sched_sbt_delay_windows
@@ -62,39 +83,45 @@ if [ -d /proc/sys/walt ]; then
 	# Setting b.L scheduler parameters
 	echo 95 > /proc/sys/walt/sched_upmigrate
 	echo 85 > /proc/sys/walt/sched_downmigrate
+
 	# By setting group upmigrate/downmigrate to 0, colocation is disabled.
 	echo 0 > /proc/sys/walt/sched_group_downmigrate
 	echo 0 > /proc/sys/walt/sched_group_upmigrate
 	echo 1 > /proc/sys/walt/sched_walt_rotate_big_tasks
 	echo 400000000 > /proc/sys/walt/sched_coloc_downmigrate_ns
-	echo 16000000 16000000 16000000 16000000 16000000 5000000 5000000 > /proc/sys/walt/sched_coloc_busy_hyst_cpu_ns
+	echo 8500000 1000000 1000000 1000000 1000000 2000000 2000000 > /proc/sys/walt/sched_coloc_busy_hyst_cpu_ns
 	echo 127 > /proc/sys/walt/sched_coloc_busy_hysteresis_enable_cpus
-	echo 10 10 10 10 10 10 95 95 > /proc/sys/walt/sched_coloc_busy_hyst_cpu_busy_pct
-	echo 8500000 8500000 8500000 8500000 8500000 2000000 2000000 > /proc/sys/walt/sched_util_busy_hyst_cpu_ns
+	echo 10 10 10 10 10 95 95 > /proc/sys/walt/sched_coloc_busy_hyst_cpu_busy_pct
+	echo 8500000 1000000 1000000 1000000 1000000 2000000 2000000 > /proc/sys/walt/sched_util_busy_hyst_cpu_ns
 	echo 127 > /proc/sys/walt/sched_util_busy_hysteresis_enable_cpus
-	echo 1 1 1 1 1 15 15 > /proc/sys/walt/sched_util_busy_hyst_cpu_util
+	echo 30 30 30 30 30 15 15 > /proc/sys/walt/sched_util_busy_hyst_cpu_util
+	echo 127 > /proc/sys/walt/sched_legacy_smart_freq_hysteresis_enable_cpus
+	echo 8500000 4000000 4000000 4000000 4000000 2000000 2000000 > /proc/sys/walt/sched_legacy_smart_freq_hyst_cpu_ns
 	echo 40 > /proc/sys/walt/sched_cluster_util_thres_pct
 	echo 30 > /proc/sys/walt/sched_idle_enough
 	echo 10 > /proc/sys/walt/sched_ed_boost
 
 	#Set early upmigrate tunables
-	freq_to_migrate=1248000
-	silver_fmax=`cat /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq`
-	silver_early_upmigrate=`expr 1024 \* $silver_fmax / $freq_to_migrate`
-	silver_early_downmigrate=`expr \( 1024 \* $silver_fmax \) / \( \( \( 10 \* $freq_to_migrate \) - $silver_fmax \) \/ 10 \)`
-	echo $silver_early_downmigrate > /proc/sys/walt/sched_early_downmigrate
-	echo $silver_early_upmigrate > /proc/sys/walt/sched_early_upmigrate
+	sched_upmigrate=`cat /proc/sys/walt/sched_upmigrate`
+	sched_downmigrate=`cat /proc/sys/walt/sched_downmigrate`
+	sched_upmigrate=${sched_upmigrate:0:2}
+	sched_downmigrate=${sched_downmigrate:0:2}
+	gold_early_upmigrate=`expr \( 1024 \* 100 \) \/ $sched_upmigrate`
+	gold_early_downmigrate=`expr \( 1024 \* 100 \) \/ $sched_downmigrate`
+	echo $gold_early_downmigrate > /proc/sys/walt/sched_early_downmigrate
+	echo $gold_early_upmigrate > /proc/sys/walt/sched_early_upmigrate
 
 	# Enable Gold CPUs for pipeline
-	echo 0 > /proc/sys/walt/sched_pipeline_cpus
+	echo 28 > /proc/sys/walt/sched_pipeline_cpus
 
 	# set the threshold for low latency task boost feature which prioritize
 	# binder activity tasks
 	echo 325 > /proc/sys/walt/walt_low_latency_task_threshold
 
-	# configure maximum frequency of silver cluster when load is not detected and ensure that
-	# other clusters' fmax remains uncapped by setting the frequency to S32_MAX
-	echo 2147483647 2147483647 > /proc/sys/walt/sched_fmax_cap
+	# configure maximum frequency of large and medium cluster for
+	# different smart freq ipc reasons
+	echo 2400000 2400000 2700000 3000000 2147483647 > /proc/sys/walt/cluster0/smart_freq/ipc_freq_levels
+	echo 3513600 3800000 4100000 4200000 2147483647 > /proc/sys/walt/cluster1/smart_freq/ipc_freq_levels
 
 	# Turn off scheduler boost at the end
 	echo 0 > /proc/sys/walt/sched_boost
@@ -118,6 +145,10 @@ if [ -d /proc/sys/walt ]; then
 	echo 1 > /sys/devices/system/cpu/cpufreq/policy0/walt/pl
 	echo 1 > /sys/devices/system/cpu/cpufreq/policy5/walt/pl
 
+	#zone base target load
+	echo 1324800 80 1747200 80 2112000 80 2438400 80 > /sys/devices/system/cpu/cpufreq/policy0/walt/zone_max_util_pct
+	echo 1900800 80 2380800 80 2784000 80 3264000 80 3628800 80 > /sys/devices/system/cpu/cpufreq/policy5/walt/zone_max_util_pct
+
 	if [ $rev == "1.0" ] || [ $rev == "1.1" ]; then
 		echo 787200 > /sys/devices/system/cpu/cpufreq/policy0/walt/rtg_boost_freq
 		echo 902400 > /sys/devices/system/cpu/cpufreq/policy5/walt/rtg_boost_freq
@@ -127,8 +158,10 @@ if [ -d /proc/sys/walt ]; then
 		echo 787200 > /sys/devices/system/cpu/cpufreq/policy0/walt/rtg_boost_freq
 		echo 902400 > /sys/devices/system/cpu/cpufreq/policy5/walt/rtg_boost_freq
 		echo 1344000 > /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
-		echo 1593600 > /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
+		echo 2380800 > /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
 	fi
+        # Disable hispeed_freq while cur_freq < 748800 (fangqiurong@BSP.CPU, 2024/8/2)
+        echo 748800 > /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_cond_freq
 else
 	echo "schedutil" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
 	echo "schedutil" > /sys/devices/system/cpu/cpufreq/policy5/scaling_governor
@@ -136,21 +169,21 @@ else
 fi
 
 if [ $rev == "1.0" ] || [ $rev == "1.1" ]; then
-	echo 556800 > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
+	echo 537600 > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
 	echo 844800 > /sys/devices/system/cpu/cpufreq/policy5/scaling_min_freq
-	echo "0:556800 5:844800" > /data/vendor/perfd/default_scaling_min_freq
+	echo "0:537600 5:844800" > /data/vendor/perfd/default_scaling_min_freq
 else
-	echo 556800 > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
-	echo 672000 > /sys/devices/system/cpu/cpufreq/policy5/scaling_min_freq
-	echo "0:556800 5:672000" > /data/vendor/perfd/default_scaling_min_freq
+	echo 537600 > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
+	echo 844800 > /sys/devices/system/cpu/cpufreq/policy5/scaling_min_freq
+	echo "0:537600 5:844800" > /data/vendor/perfd/default_scaling_min_freq
 fi
 
 # Reset the RT boost, which is 1024 (max) by default.
 echo 0 > /proc/sys/kernel/sched_util_clamp_min_rt_default
 
 # cpuset parameters
-echo 0-5 > /dev/cpuset/background/cpus
-echo 0-5 > /dev/cpuset/system-background/cpus
+echo 0-4 > /dev/cpuset/background/cpus
+echo 0-4 > /dev/cpuset/system-background/cpus
 
 
 # configure bus-dcvs
@@ -220,10 +253,14 @@ case "$console_config" in
 	"1")
 		echo "Enable console config to $console_config"
 		echo 0 > /proc/sys/kernel/printk
-	;;
+		;;
 	*)
 		echo "Enable console config to $console_config"
-	;;
+		;;
 esac
+
+echo 1 > /proc/oplus_scheduler/sched_assist/silver_perf_core
+
+chown system system /proc/oplus_cl/cl_glthread
 
 setprop vendor.post_boot.parsed 1
