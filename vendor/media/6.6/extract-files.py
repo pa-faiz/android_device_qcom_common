@@ -27,6 +27,13 @@ namespace_imports = [
 def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
     return f'{lib}_{partition}' if partition == 'vendor' else None
 
+lib_fixups: lib_fixups_user_type = {
+    **lib_fixups,
+    (
+        'vendor.qti.hardware.vpp-V1-ndk',
+    ): lib_fixup_vendor_suffix,
+}
+
 blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libqcodec2_core.so': blob_fixup()
         .replace_needed('android.hardware.graphics.common-V5-ndk.so', 'android.hardware.graphics.common-V7-ndk.so'),
@@ -35,19 +42,16 @@ blob_fixups: blob_fixups_user_type = {
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
-        'libcv_common',
-        'libeva',
         'libpowercore',
-        'libvmmem',
     ): lib_fixup_remove,
 }
 
 module = ExtractUtilsQTIModule(
     'media/6.6',
     QTIComponentType.VENDOR,
-    namespace_imports=namespace_imports,
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
+    namespace_imports=namespace_imports,
 )
 
 if __name__ == '__main__':
